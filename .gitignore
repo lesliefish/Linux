@@ -3,3 +3,9 @@
 ################################################################################
 
 *.suo
+/.vs/ProjectSettings.json
+/.vs/VSWorkspaceState.json
+/.vs/slnx.sqlite
+/Demos/Echo/EchoServer/.vs/EchoServer/v16/Browse.VC.db
+/Demos/Echo/EchoServer/.vs/EchoServer/v16/Browse.VC.opendb
+/Demos/Echo/EchoServer/.vs/EchoServer/v16/ipch/AutoPCH/92b5313efbd545c0/MAIN.ipch
