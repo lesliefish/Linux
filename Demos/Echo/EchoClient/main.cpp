@@ -15,6 +15,8 @@ int main(int argc, char* argv[])
     if (argc != 2)
         return -1;
     char* msg = argv[1];
+
+    //char* msg = "what can i do for you ?";
     printf("msg is %s\n", msg);
 
     struct sockaddr_in serverAddr;
@@ -27,12 +29,16 @@ int main(int argc, char* argv[])
     serverAddr.sin_port = htons(PORT);
 
     int ret = connect(sockfd, (struct sockaddr*) & serverAddr, sizeof(serverAddr));
-    if (!ret)
+    if (ret)
     {
-        printf("connect failed. %s, %d", serverAddr.sin_addr, serverAddr.sin_port);
+        printf("connect failed.");
     }
 
-    write(sockfd, msg, strlen(msg));
+    ssize_t writeLen = write(sockfd, msg, strlen(msg));
+    if (writeLen > 0)
+    {
+        printf("write msg is %s, len is %d\n", msg, strlen(msg));
+    }
 
     char buf[256] = { 0 };
     ssize_t readLen = read(sockfd, buf, sizeof(buf) - 1);
