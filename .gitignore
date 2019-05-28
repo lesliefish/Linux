@@ -20,3 +20,6 @@
 *.lastbuildstate
 /Demos/Echo/EchoServer/obj/x64/Debug/EchoServer.vcxproj.FileListAbsolute.txt
 /Demos/Echo/EchoServer/obj/ARM/Debug/EchoServer.tlog/unsuccessfulbuild
+/Demos/Echo/EchoServer/.vs/EchoServer/v16/Solution.VC.db
+/Demos/Echo/EchoServer/.vs/EchoServer/v16/Solution.VC.db-wal
+/Demos/Echo/EchoServer/.vs/EchoServer/v16/Solution.VC.db-shm

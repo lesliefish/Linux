@@ -1,48 +1,62 @@
-#include <cstdio>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <string.h>
-#include <ctype.h>
-#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
-constexpr int PORT{ 6666 };
+#define MAXLINE 4096
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
-    int sock{ -1 };
-    struct sockaddr_in serverAddr {};
+    int    listenfd, connfd;
+    struct sockaddr_in servaddr;
+    char   buff[4096];
+    int    n;
 
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-
-    bzero(&serverAddr, sizeof(serverAddr));
-
-    serverAddr.sin_port = AF_INET;
-    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serverAddr.sin_port = htons(PORT);
-
-    bind(sock, (struct sockaddr*) & serverAddr, sizeof(serverAddr));
-
-    listen(sock, 128);
-
-    printf("waiting for connecting: \n");
-
-    while (true)
+    if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
-        struct sockaddr_in client;
-        socklen_t clientAddrLen;
-        char clientIp[16] = { 0 };
-        auto clientSock = accept(sock, (struct sockaddr*) & client, &clientAddrLen);
-        printf("client ip is %s, port is %d \n",
-            inet_ntop(AF_INET, &client.sin_addr.s_addr, clientIp, sizeof(clientIp)),
-            ntohs(client.sin_port));
-
-        char readBuf[256] = { 0 };
-        int readLen = read(clientSock, readBuf, sizeof(readBuf) - 1);
-        readBuf[readLen] = '\0';
-        printf("recieve is %s, len is %d\n", readBuf, readLen);
+        printf("create socket error: %s(errno: %d)\n", strerror(errno), errno);
+        exit(0);
     }
 
-    return 0;
+    memset(&servaddr, 0, sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port = htons(6666);
+
+    if (bind(listenfd, (struct sockaddr*) & servaddr, sizeof(servaddr)) == -1)
+    {
+        printf("bind socket error: %s(errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    if (listen(listenfd, 10) == -1)
+    {
+        printf("listen socket error: %s(errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    printf("======waiting for client's request======\n");
+    while (true)
+    {
+        if ((connfd = accept(listenfd, (struct sockaddr*)NULL, NULL)) == -1) 
+        {
+            printf("accept socket error: %s(errno: %d)", strerror(errno), errno);
+            continue;
+        }
+        
+        n = recv(connfd, buff, MAXLINE, 0);
+        buff[n] = '\0';
+        printf("recv msg from client: %s\n", buff);
+
+        n = write(connfd, buff, n);
+        printf("write msg to client: %s\n", buff);
+
+        close(connfd);
+    }
+
+    close(listenfd);
 }
