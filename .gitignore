@@ -9,3 +9,14 @@
 /Demos/Echo/EchoServer/.vs/EchoServer/v16/Browse.VC.db
 /Demos/Echo/EchoServer/.vs/EchoServer/v16/Browse.VC.opendb
 /Demos/Echo/EchoServer/.vs/EchoServer/v16/ipch/AutoPCH/92b5313efbd545c0/MAIN.ipch
+*.gif
+*.png
+/.vs/Linux/v16/Browse.VC.db
+*.log
+/Demos/Echo/EchoClient/obj/x64/Debug/EchoClient.vcxproj.FileListAbsolute.txt
+/Demos/Echo/EchoClient/readme/readme.html
+/Demos/Echo/EchoClient/readme/stylesheet.css
+*.ipch
+*.lastbuildstate
+/Demos/Echo/EchoServer/obj/x64/Debug/EchoServer.vcxproj.FileListAbsolute.txt
+/Demos/Echo/EchoServer/obj/ARM/Debug/EchoServer.tlog/unsuccessfulbuild
